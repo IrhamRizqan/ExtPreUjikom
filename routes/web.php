@@ -13,13 +13,15 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-    
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/product/{id}', [ProductController::class, 'edit'])->name('products.edit');
+    Route::post('/product/{id}', [ProductController::class, 'update'])->name('');
 });
 
 

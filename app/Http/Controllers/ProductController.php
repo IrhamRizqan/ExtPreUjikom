@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use GuzzleHttp\Psr7\Request;
 
 class ProductController extends Controller
 {
@@ -13,7 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.index');
+        $product = Product::all();
+        return view('products.index', compact(['product']));
     }
 
     /**
@@ -43,18 +45,26 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        return view('products.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        // $request->validate([
+        //     'title' => 'required|max:255',
+        //     'body' => 'required',
+        //   ]);
+          $product = Product::find($id);
+          $product->update($request->all());
+          return redirect()->route('posts.index')
+            ->with('success', 'Post updated successfully.');
+        }
 
     /**
      * Remove the specified resource from storage.
